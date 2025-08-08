@@ -345,14 +345,7 @@ class CPUScheduler {
                     <div class="metric-value">${metrics.totalTime}</div>
                     <div class="metric-label">Total Time</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">${metrics.cpuUtilization}%</div>
-                    <div class="metric-label">CPU Utilization</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">${metrics.throughput}</div>
-                    <div class="metric-label">Throughput</div>
-                </div>
+
             </div>
         `;
     }
@@ -367,14 +360,10 @@ class CPUScheduler {
             chartsContainer.classList.remove('d-none');
         }
 
-        // Performance Overview Chart (Doughnut)
-        this.createPerformanceChart(metrics);
-        
-        // Process Comparison Chart (Bar)
-        this.createProcessChart(processes);
-        
+
+       
         // Time Analysis Chart (Line)
-        this.createTimeChart(processes);
+        // this.createTimeChart(processes);
     }
 
     // Create Performance Overview Chart
@@ -390,7 +379,7 @@ class CPUScheduler {
         window.performanceChartInstance = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Avg Waiting Time', 'Avg Turnaround Time', 'CPU Utilization', 'Throughput'],
+                labels: ['Avg Waiting Time', 'Avg Turnaround Time'],
                 datasets: [{
                     data: [
                         parseFloat(metrics.avgWaitingTime),
@@ -427,14 +416,7 @@ class CPUScheduler {
                                 const label = context.label;
                                 let value = context.parsed;
                                 
-                                if (label === 'CPU Utilization') {
-                                    return `${label}: ${value}%`;
-                                } else if (label === 'Throughput') {
-                                    return `${label}: ${(value/10).toFixed(2)}`;
-                                } else {
-                                    return `${label}: ${value}`;
-                                }
-                            }
+                             }
                         }
                     }
                 }

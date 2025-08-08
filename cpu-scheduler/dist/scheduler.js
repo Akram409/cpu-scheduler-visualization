@@ -345,14 +345,7 @@ class CPUScheduler {
                     <div class="metric-value">${metrics.totalTime}</div>
                     <div class="metric-label">Total Time</div>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-value">${metrics.cpuUtilization}%</div>
-                    <div class="metric-label">CPU Utilization</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">${metrics.throughput}</div>
-                    <div class="metric-label">Throughput</div>
-                </div>
+
             </div>
         `;
     }
