@@ -1,4 +1,4 @@
-// Main Application Logic for CPU Scheduling Simulator
+// Main Application Logic for CPU Scheduling Simulator - Production Build
 
 class SchedulerApp {
     constructor() {
@@ -54,17 +54,17 @@ class SchedulerApp {
         
         // Show/hide time quantum input for Round Robin
         if (algorithm === 'rr') {
-            timeQuantumDiv.classList.remove('d-none');
+            timeQuantumDiv.classList.remove('hidden');
         } else {
-            timeQuantumDiv.classList.add('d-none');
+            timeQuantumDiv.classList.add('hidden');
         }
         
         // Show/hide priority input for Priority Scheduling
         if (algorithm === 'priority') {
-            priorityInput.classList.remove('d-none');
+            priorityInput.classList.remove('hidden');
             priorityInput.required = true;
         } else {
-            priorityInput.classList.add('d-none');
+            priorityInput.classList.add('hidden');
             priorityInput.required = false;
         }
         
@@ -135,33 +135,51 @@ class SchedulerApp {
         let algorithmName;
 
         try {
-            switch (algorithm) {
-                case 'fcfs':
-                    result = this.scheduler.fcfs(this.processes);
-                    algorithmName = 'First Come First Serve (FCFS)';
-                    break;
-                case 'sjf':
-                    result = this.scheduler.sjf(this.processes);
-                    algorithmName = 'Shortest Job First (SJF)';
-                    break;
-                case 'priority':
-                    result = this.scheduler.priorityScheduling(this.processes);
-                    algorithmName = 'Priority Scheduling';
-                    break;
-                case 'rr':
-                    result = this.scheduler.roundRobin(this.processes, timeQuantum);
-                    algorithmName = `Round Robin (Time Quantum: ${timeQuantum})`;
-                    break;
-                default:
-                    throw new Error('Invalid algorithm selected');
-            }
+            // Add loading state
+            const simulateBtn = document.getElementById('simulate');
+            simulateBtn.classList.add('loading');
+            simulateBtn.disabled = true;
 
-            this.displayResults(result, algorithmName);
-            this.showAlert(`${algorithmName} completed`, 'success');
+            // Use setTimeout to allow UI to update
+            setTimeout(() => {
+                try {
+                    switch (algorithm) {
+                        case 'fcfs':
+                            result = this.scheduler.fcfs(this.processes);
+                            algorithmName = 'First Come First Serve (FCFS)';
+                            break;
+                        case 'sjf':
+                            result = this.scheduler.sjf(this.processes);
+                            algorithmName = 'Shortest Job First (SJF)';
+                            break;
+                        case 'priority':
+                            result = this.scheduler.priorityScheduling(this.processes);
+                            algorithmName = 'Priority Scheduling';
+                            break;
+                        case 'rr':
+                            result = this.scheduler.roundRobin(this.processes, timeQuantum);
+                            algorithmName = `Round Robin (Time Quantum: ${timeQuantum})`;
+                            break;
+                        default:
+                            throw new Error('Invalid algorithm selected');
+                    }
+
+                    this.displayResults(result, algorithmName);
+                    this.showAlert(`${algorithmName} completed`, 'success');
+
+                } catch (error) {
+                    console.error('Simulation error:', error);
+                    this.showAlert('An error occurred during simulation. Please check your inputs.', 'error');
+                } finally {
+                    // Remove loading state
+                    simulateBtn.classList.remove('loading');
+                    simulateBtn.disabled = false;
+                }
+            }, 100);
 
         } catch (error) {
             console.error('Simulation error:', error);
-            this.showAlert('An error occurred during simulation. Please check your inputs.', 'danger');
+            this.showAlert('An error occurred during simulation. Please check your inputs.', 'error');
         }
     }
 
@@ -173,26 +191,23 @@ class SchedulerApp {
         // Update Gantt Chart
         const ganttContainer = document.getElementById('ganttChart');
         ganttContainer.innerHTML = `
-            <h6 class="mb-3">${algorithmName}</h6>
+            <h6 class="mb-3 text-lg font-semibold">${algorithmName}</h6>
             ${this.scheduler.generateGanttChart(gantt, totalTime)}
         `;
 
         // Update Results Table
         const resultsContainer = document.getElementById('resultsTable');
         resultsContainer.innerHTML = `
-            <h6 class="mb-3">Process Execution Results</h6>
+            <h6 class="mb-3 text-lg font-semibold">Process Execution Results</h6>
             ${this.scheduler.generateResultsTable(processes)}
         `;
 
         // Update Performance Metrics
         const metricsContainer = document.getElementById('performanceMetrics');
         metricsContainer.innerHTML = `
-            <h6 class="mb-3">Performance Analysis</h6>
+            <h6 class="mb-3 text-lg font-semibold">Performance Analysis</h6>
             ${this.scheduler.generateMetricsHTML(metrics)}
         `;
-
-        // Generate Charts
-        this.scheduler.generateCharts(processes, metrics);
 
         // Add animation to results
         this.animateResults();
@@ -207,14 +222,16 @@ class SchedulerApp {
         ];
 
         elements.forEach((element, index) => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                element.style.transition = 'all 0.5s ease';
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, index * 200);
+            if (element) {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    element.style.transition = 'all 0.5s ease';
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, index * 200);
+            }
         });
     }
 
@@ -227,7 +244,7 @@ class SchedulerApp {
         const processList = document.getElementById('processList');
         
         if (this.processes.length === 0) {
-            processList.innerHTML = '<p class="text-muted text-center mb-0">No processes added yet</p>';
+            processList.innerHTML = '<p class="text-base-content/60 text-center">No processes added yet</p>';
             return;
         }
 
@@ -239,7 +256,7 @@ class SchedulerApp {
                     <div class="process-info">
                         <strong>${process.pid}</strong>: Arrival: ${process.arrival}, Burst: ${process.burst}${priorityText}
                     </div>
-                    <button class="remove-process" onclick="app.removeProcess(${index})" title="Remove Process">
+                    <button class="remove-process" onclick="app.removeProcess(${index})" title="Remove Process" aria-label="Remove ${process.pid}">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -253,10 +270,10 @@ class SchedulerApp {
         const simulateBtn = document.getElementById('simulate');
         if (this.processes.length === 0) {
             simulateBtn.disabled = true;
-            simulateBtn.innerHTML = '<i class="fas fa-play me-1"></i>Add Processes First';
+            simulateBtn.innerHTML = '<i class="fas fa-play mr-1"></i>Add Processes First';
         } else {
             simulateBtn.disabled = false;
-            simulateBtn.innerHTML = '<i class="fas fa-play me-1"></i>Run Simulation';
+            simulateBtn.innerHTML = '<i class="fas fa-play mr-1"></i>Run Simulation';
         }
     }
 
@@ -277,14 +294,11 @@ class SchedulerApp {
             
             // Clear results
             document.getElementById('ganttChart').innerHTML = 
-                '<i class="fas fa-info-circle me-2"></i>Run simulation to see Gantt chart';
+                '<i class="fas fa-info-circle mr-2"></i>Run simulation to see Gantt chart';
             document.getElementById('resultsTable').innerHTML = 
-                '<i class="fas fa-info-circle me-2"></i>Run simulation to see results';
+                '<i class="fas fa-info-circle mr-2"></i>Run simulation to see results';
             document.getElementById('performanceMetrics').innerHTML = 
-                '<i class="fas fa-info-circle me-2"></i>Run simulation to see performance metrics';
-            
-            // Clear charts
-            this.scheduler.clearCharts();
+                '<i class="fas fa-info-circle mr-2"></i>Run simulation to see performance metrics';
             
             this.updateUI();
             this.showAlert('All cleared', 'success');
@@ -313,37 +327,43 @@ class SchedulerApp {
     }
 
     showAlert(message, type = 'info') {
-        // Create alert element using Bootstrap classes
+        // Create alert element using DaisyUI classes
         const alertDiv = document.createElement('div');
-        let alertClass = 'alert alert-dismissible fade show';
+        let alertClass = 'alert';
         let icon = '';
         
         switch(type) {
             case 'success':
                 alertClass += ' alert-success';
-                icon = '<i class="fas fa-check-circle me-2"></i>';
+                icon = '<i class="fas fa-check-circle mr-2"></i>';
                 break;
             case 'warning':
                 alertClass += ' alert-warning';
-                icon = '<i class="fas fa-exclamation-triangle me-2"></i>';
+                icon = '<i class="fas fa-exclamation-triangle mr-2"></i>';
                 break;
             case 'error':
             case 'danger':
-                alertClass += ' alert-danger';
-                icon = '<i class="fas fa-times-circle me-2"></i>';
+                alertClass += ' alert-error';
+                icon = '<i class="fas fa-times-circle mr-2"></i>';
                 break;
             default:
                 alertClass += ' alert-info';
-                icon = '<i class="fas fa-info-circle me-2"></i>';
+                icon = '<i class="fas fa-info-circle mr-2"></i>';
         }
         
-        alertDiv.className = alertClass;
+        alertDiv.className = `${alertClass} fixed top-5 right-5 z-50 max-w-sm shadow-lg text-sm`;
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.setAttribute('aria-live', 'polite');
         
         alertDiv.innerHTML = `
-            <div class="d-flex align-items-center">
-                ${icon}
-                <span>${message}</span>
-                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="flex items-center justify-between w-full">
+                <div class="flex items-center">
+                    ${icon}
+                    <span class="text-sm">${message}</span>
+                </div>
+                <button type="button" class="btn btn-ghost btn-xs ml-2" onclick="this.parentElement.parentElement.remove()" aria-label="Close alert">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
             </div>
         `;
 
@@ -381,54 +401,73 @@ class SchedulerApp {
         a.click();
         URL.revokeObjectURL(url);
 
-        this.showAlert('Results exported successfully!', 'success');
+        this.showAlert('Results exported', 'success');
+    }
+
+    // Error handling
+    handleError(error, context = 'Unknown') {
+        console.error(`Error in ${context}:`, error);
+        this.showAlert(`An error occurred in ${context}. Please try again.`, 'error');
     }
 }
 
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.app = new SchedulerApp();
-    
-    // Add keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey || e.metaKey) {
-            switch (e.key) {
-                case 'Enter':
-                    e.preventDefault();
-                    if (!document.getElementById('simulate').disabled) {
-                        app.runSimulation();
-                    }
-                    break;
-                case 'n':
-                    e.preventDefault();
-                    document.getElementById('arrivalTime').focus();
-                    break;
-                case 'r':
-                    e.preventDefault();
-                    app.clearAll();
-                    break;
-                case 'e':
-                    e.preventDefault();
-                    app.loadExample();
-                    break;
+    try {
+        window.app = new SchedulerApp();
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        if (!document.getElementById('simulate').disabled) {
+                            app.runSimulation();
+                        }
+                        break;
+                    case 'n':
+                        e.preventDefault();
+                        document.getElementById('arrivalTime').focus();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        app.clearAll();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        app.loadExample();
+                        break;
+                }
             }
-        }
-    });
+        });
 
-    // Add tooltips for keyboard shortcuts
-    const tooltips = [
-        { id: 'simulate', text: 'Ctrl+Enter to run simulation' },
-        { id: 'addProcess', text: 'Ctrl+N to focus on input' },
-        { id: 'clearAll', text: 'Ctrl+R to clear all' },
-        { id: 'loadExample', text: 'Ctrl+E to load example' }
-    ];
+        // Add tooltips for keyboard shortcuts
+        const tooltips = [
+            { id: 'simulate', text: 'Ctrl+Enter to run simulation' },
+            { id: 'addProcess', text: 'Ctrl+N to focus on input' },
+            { id: 'clearAll', text: 'Ctrl+R to clear all' },
+            { id: 'loadExample', text: 'Ctrl+E to load example' }
+        ];
 
-    tooltips.forEach(({ id, text }) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.title = text;
-        }
-    });
+        tooltips.forEach(({ id, text }) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.title = text;
+            }
+        });
+
+    } catch (error) {
+        console.error('Failed to initialize application:', error);
+        document.body.innerHTML = `
+            <div class="min-h-screen flex items-center justify-center bg-red-50">
+                <div class="text-center p-8">
+                    <h1 class="text-2xl font-bold text-red-600 mb-4">Application Failed to Load</h1>
+                    <p class="text-red-500">Please refresh the page and try again.</p>
+                </div>
+            </div>
+        `;
+    }
 });
 
 // Add some utility functions for enhanced functionality
@@ -448,3 +487,19 @@ if (typeof performance !== 'undefined') {
         }, 0);
     });
 }
+
+// Error handling for unhandled errors
+window.addEventListener('error', (e) => {
+    console.error('Unhandled error:', e.error);
+    if (window.app) {
+        window.app.showAlert('An unexpected error occurred. Please refresh the page.', 'error');
+    }
+});
+
+// Handle unhandled promise rejections
+window.addEventListener('unhandledrejection', (e) => {
+    console.error('Unhandled promise rejection:', e.reason);
+    if (window.app) {
+        window.app.showAlert('An unexpected error occurred. Please refresh the page.', 'error');
+    }
+});

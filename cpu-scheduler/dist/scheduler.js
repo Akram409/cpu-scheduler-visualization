@@ -1,4 +1,4 @@
-// CPU Scheduling Algorithms Implementation
+// CPU Scheduling Algorithms Implementation - Production Build
 // Based on the original Python code from schedulling.ipynb
 
 class CPUScheduler {
@@ -262,7 +262,7 @@ class CPUScheduler {
 
     // Generate Gantt chart HTML
     generateGanttChart(gantt, totalTime) {
-        if (gantt.length === 0) return '<p class="text-muted">No processes to display</p>';
+        if (gantt.length === 0) return '<p class="text-base-content/60">No processes to display</p>';
         
         const scale = Math.max(600 / totalTime, 20); // Minimum 20px per time unit
         let html = '<div class="gantt-container">';
@@ -293,7 +293,7 @@ class CPUScheduler {
 
     // Generate results table HTML
     generateResultsTable(processes) {
-        if (processes.length === 0) return '<p class="text-muted">No results to display</p>';
+        if (processes.length === 0) return '<p class="text-base-content/60">No results to display</p>';
         
         let html = '<table class="results-table">';
         html += '<thead><tr>';
@@ -329,7 +329,7 @@ class CPUScheduler {
 
     // Generate performance metrics HTML
     generateMetricsHTML(metrics) {
-        if (!metrics) return '<p class="text-muted">No metrics to display</p>';
+        if (!metrics) return '<p class="text-base-content/60">No metrics to display</p>';
         
         return `
             <div class="metrics-container">
@@ -355,265 +355,6 @@ class CPUScheduler {
                 </div>
             </div>
         `;
-    }
-
-    // Generate charts for performance visualization
-    generateCharts(processes, metrics) {
-        if (!processes || processes.length === 0) return;
-
-        // Show charts container
-        const chartsContainer = document.getElementById('chartsContainer');
-        if (chartsContainer) {
-            chartsContainer.classList.remove('d-none');
-        }
-
-        // Performance Overview Chart (Doughnut)
-        this.createPerformanceChart(metrics);
-        
-        // Process Comparison Chart (Bar)
-        this.createProcessChart(processes);
-        
-        // Time Analysis Chart (Line)
-        this.createTimeChart(processes);
-    }
-
-    // Create Performance Overview Chart
-    createPerformanceChart(metrics) {
-        const ctx = document.getElementById('performanceChart');
-        if (!ctx) return;
-
-        // Destroy existing chart if it exists
-        if (window.performanceChartInstance) {
-            window.performanceChartInstance.destroy();
-        }
-
-        window.performanceChartInstance = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Avg Waiting Time', 'Avg Turnaround Time', 'CPU Utilization', 'Throughput'],
-                datasets: [{
-                    data: [
-                        parseFloat(metrics.avgWaitingTime),
-                        parseFloat(metrics.avgTurnaroundTime),
-                        parseFloat(metrics.cpuUtilization),
-                        parseFloat(metrics.throughput) * 10 // Scale for visibility
-                    ],
-                    backgroundColor: [
-                        '#FF6B6B',
-                        '#4ECDC4',
-                        '#45B7D1',
-                        '#FFA07A'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            font: {
-                                size: 12
-                            }
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.label;
-                                let value = context.parsed;
-                                
-                                if (label === 'CPU Utilization') {
-                                    return `${label}: ${value}%`;
-                                } else if (label === 'Throughput') {
-                                    return `${label}: ${(value/10).toFixed(2)}`;
-                                } else {
-                                    return `${label}: ${value}`;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    // Create Process Comparison Chart
-    createProcessChart(processes) {
-        const ctx = document.getElementById('processChart');
-        if (!ctx) return;
-
-        // Destroy existing chart if it exists
-        if (window.processChartInstance) {
-            window.processChartInstance.destroy();
-        }
-
-        const processNames = processes.map(p => p.pid);
-        const waitingTimes = processes.map(p => p.waiting);
-        const turnaroundTimes = processes.map(p => p.turnaround);
-
-        window.processChartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: processNames,
-                datasets: [
-                    {
-                        label: 'Waiting Time',
-                        data: waitingTimes,
-                        backgroundColor: 'rgba(255, 107, 107, 0.8)',
-                        borderColor: 'rgba(255, 107, 107, 1)',
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Turnaround Time',
-                        data: turnaroundTimes,
-                        backgroundColor: 'rgba(78, 205, 196, 0.8)',
-                        borderColor: 'rgba(78, 205, 196, 1)',
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Time Units'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Processes'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    }
-                }
-            }
-        });
-    }
-
-    // Create Time Analysis Chart
-    createTimeChart(processes) {
-        const ctx = document.getElementById('timeChart');
-        if (!ctx) return;
-
-        // Destroy existing chart if it exists
-        if (window.timeChartInstance) {
-            window.timeChartInstance.destroy();
-        }
-
-        const processNames = processes.map(p => p.pid);
-        const arrivalTimes = processes.map(p => p.arrival);
-        const completionTimes = processes.map(p => p.completion);
-        const burstTimes = processes.map(p => p.burst);
-
-        window.timeChartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: processNames,
-                datasets: [
-                    {
-                        label: 'Arrival Time',
-                        data: arrivalTimes,
-                        borderColor: 'rgba(69, 183, 209, 1)',
-                        backgroundColor: 'rgba(69, 183, 209, 0.2)',
-                        borderWidth: 3,
-                        fill: false,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Completion Time',
-                        data: completionTimes,
-                        borderColor: 'rgba(255, 160, 122, 1)',
-                        backgroundColor: 'rgba(255, 160, 122, 0.2)',
-                        borderWidth: 3,
-                        fill: false,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Burst Time',
-                        data: burstTimes,
-                        borderColor: 'rgba(152, 216, 200, 1)',
-                        backgroundColor: 'rgba(152, 216, 200, 0.2)',
-                        borderWidth: 3,
-                        fill: false,
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Time Units'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Processes'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top'
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false
-                    }
-                },
-                interaction: {
-                    mode: 'nearest',
-                    axis: 'x',
-                    intersect: false
-                }
-            }
-        });
-    }
-
-    // Clear all charts
-    clearCharts() {
-        // Hide charts container
-        const chartsContainer = document.getElementById('chartsContainer');
-        if (chartsContainer) {
-            chartsContainer.classList.add('d-none');
-        }
-
-        // Destroy existing charts
-        if (window.performanceChartInstance) {
-            window.performanceChartInstance.destroy();
-            window.performanceChartInstance = null;
-        }
-        if (window.processChartInstance) {
-            window.processChartInstance.destroy();
-            window.processChartInstance = null;
-        }
-        if (window.timeChartInstance) {
-            window.timeChartInstance.destroy();
-            window.timeChartInstance = null;
-        }
     }
 }
 

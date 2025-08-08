@@ -1,0 +1,355 @@
+/* Optimized CSS for CPU Scheduling Simulator - Production Build */
+
+/* Process List Styling */
+.process-item {
+    @apply bg-base-200 border border-base-300 rounded-lg p-3 mb-2 flex justify-between items-center transition-all duration-300 hover:bg-base-300 hover:translate-x-1;
+}
+
+.process-info {
+    @apply text-sm font-medium;
+}
+
+.remove-process {
+    @apply btn btn-ghost btn-sm text-error hover:bg-error hover:text-error-content transition-colors duration-300;
+    background: none;
+    border: none;
+    padding: 4px 8px;
+}
+
+/* Gantt Chart Styling - Enhanced Bootstrap-like appearance */
+.gantt-container {
+    @apply overflow-x-auto py-6 px-4;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.gantt-chart {
+    @apply flex items-center my-6;
+    min-width: 700px;
+    padding: 20px 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.gantt-process {
+    @apply h-16 flex items-center justify-center text-white font-bold text-base border-2 border-white rounded-xl mr-1 relative transition-all duration-300 cursor-pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.gantt-process::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.gantt-process:hover {
+    transform: translateY(-4px) scale(1.08);
+    z-index: 10;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    border-color: #ffd700;
+}
+
+.gantt-time-labels {
+    @apply flex mt-4;
+    min-width: 700px;
+    background: white;
+    border-radius: 8px;
+    padding: 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+}
+
+.gantt-time-label {
+    @apply text-sm text-center font-semibold text-gray-700 border-l border-gray-300 pl-1;
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    padding: 8px 4px;
+    transition: all 0.2s ease;
+}
+
+.gantt-time-label:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transform: scale(1.1);
+}
+
+.gantt-time-label:first-child {
+    border-left: none;
+    border-radius: 8px 0 0 8px;
+}
+
+.gantt-time-label:last-child {
+    border-radius: 0 8px 8px 0;
+}
+
+/* Process Colors - Optimized gradients */
+.process-p1 { background: linear-gradient(45deg, #FF6B6B, #FF8E8E); }
+.process-p2 { background: linear-gradient(45deg, #4ECDC4, #44A08D); }
+.process-p3 { background: linear-gradient(45deg, #45B7D1, #96C93D); }
+.process-p4 { background: linear-gradient(45deg, #FFA07A, #FA8072); }
+.process-p5 { background: linear-gradient(45deg, #98D8C8, #F7DC6F); }
+.process-p6 { background: linear-gradient(45deg, #BB8FCE, #85C1E9); }
+.process-p7 { background: linear-gradient(45deg, #F8C471, #F1948A); }
+.process-p8 { background: linear-gradient(45deg, #82E0AA, #AED6F1); }
+
+/* Results Table Styling - Enhanced Bootstrap-like appearance */
+.results-table {
+    @apply w-full border-collapse mt-4 rounded-xl overflow-hidden shadow-xl bg-white;
+    border: 1px solid #e2e8f0;
+}
+
+.results-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    @apply text-white p-4 text-center font-bold text-base;
+    border-bottom: 3px solid #5a67d8;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.results-table td {
+    @apply p-4 text-center border-b border-gray-200 text-base font-medium;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.results-table tbody tr:nth-child(even) td {
+    background: #f8fafc;
+}
+
+.results-table tbody tr:hover td {
+    background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.results-table tbody tr:first-child td {
+    border-top: 2px solid #667eea;
+}
+
+/* Performance Metrics Styling - Enhanced cards */
+.metrics-container {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mt-6;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    @apply text-white p-6 rounded-2xl text-center shadow-2xl transition-all duration-300 hover:-translate-y-2;
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #ffa07a);
+}
+
+.metric-card:hover {
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    transform: translateY(-8px) scale(1.05);
+}
+
+.metric-value {
+    @apply text-4xl font-black mb-2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background: linear-gradient(45deg, #ffffff, #e2e8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.metric-label {
+    @apply text-base font-semibold opacity-95;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Enhanced Card Styling */
+.card {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl;
+}
+
+.card-header {
+    @apply font-semibold border-b-0;
+}
+
+/* Loading Animation */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.loading {
+    animation: pulse 1.5s infinite;
+}
+
+/* Alert/Toast Styling - Optimized */
+.alert {
+    @apply fixed top-5 right-5 z-50 max-w-sm shadow-lg;
+}
+
+/* Button Enhancements */
+.btn {
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg;
+}
+
+/* Input Focus Enhancements */
+.input:focus,
+.select:focus {
+    @apply ring-2 ring-primary/50 border-primary;
+}
+
+/* Tooltip Styling */
+.tooltip-custom {
+    @apply absolute bg-black/80 text-white px-3 py-2 rounded-md text-xs z-50 pointer-events-none opacity-0 transition-opacity duration-300;
+}
+
+.tooltip-custom.show {
+    @apply opacity-100;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-base-200 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-primary to-secondary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply from-primary/80 to-secondary/80;
+}
+
+/* Responsive Design - Mobile First */
+@media (max-width: 640px) {
+    .gantt-chart {
+        min-width: 300px;
+    }
+    
+    .gantt-time-labels {
+        min-width: 300px;
+    }
+    
+    .results-table {
+        @apply text-xs;
+    }
+    
+    .results-table th,
+    .results-table td {
+        @apply p-2;
+    }
+    
+    .metrics-container {
+        @apply grid-cols-1;
+    }
+    
+    .metric-card {
+        @apply p-4;
+    }
+    
+    .metric-value {
+        @apply text-2xl;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        @apply px-2;
+    }
+    
+    .card-body {
+        @apply p-4;
+    }
+    
+    h1 {
+        @apply text-3xl;
+    }
+    
+    .btn {
+        @apply text-sm;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .btn, .alert, footer {
+        display: none !important;
+    }
+    
+    .card {
+        @apply shadow-none border border-gray-300;
+    }
+    
+    .gantt-process {
+        @apply border border-gray-400;
+    }
+    
+    body {
+        @apply bg-white text-black;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .gantt-process {
+        @apply border-4 border-black;
+    }
+    
+    .card {
+        @apply border-2 border-black;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    [data-theme="light"] {
+        color-scheme: dark;
+    }
+}
+
+/* Focus Visible for Accessibility */
+.btn:focus-visible,
+.input:focus-visible,
+.select:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+}
+
+/* Loading States */
+.btn.loading {
+    @apply opacity-70 cursor-not-allowed;
+}
+
+.btn.loading::after {
+    content: "";
+    @apply inline-block w-4 h-4 ml-2 border-2 border-current border-r-transparent rounded-full animate-spin;
+}

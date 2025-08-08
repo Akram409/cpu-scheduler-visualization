@@ -1,42 +1,169 @@
-/* Custom CSS for CPU Scheduling Simulator with Tailwind CSS and DaisyUI */
+/* Custom CSS for CPU Scheduling Simulator with Bootstrap */
 
-/* Process List Styling */
+/* Custom CSS Variables for consistent theming */
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+}
+
+/* Body and Background Styling */
+.bg-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+}
+
+.bg-overlay {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.bg-primary-gradient {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+/* Process List Container Styling */
+.process-list-container {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Process List Item Styling */
 .process-item {
-    @apply bg-base-200 border border-base-300 rounded-lg p-3 mb-2 flex justify-between items-center transition-all duration-300 hover:bg-base-300 hover:translate-x-1;
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.process-item:hover {
+    background-color: #dee2e6;
+    transform: translateX(4px);
 }
 
 .process-info {
-    @apply text-sm font-medium;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 .remove-process {
-    @apply btn btn-ghost btn-sm text-error hover:bg-error hover:text-error-content transition-colors duration-300;
     background: none;
     border: none;
+    color: var(--danger-color);
     padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.remove-process:hover {
+    background-color: var(--danger-color);
+    color: white;
 }
 
 /* Gantt Chart Styling */
 .gantt-container {
-    @apply overflow-x-auto py-5;
+    overflow-x: auto;
+    padding: 24px 16px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 16px;
+    border: 2px solid #e2e8f0;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
 }
 
 .gantt-chart {
-    @apply flex items-center min-w-full my-5;
-    min-width: 600px;
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+    min-width: 700px;
+    padding: 20px 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
 }
 
 .gantt-process {
-    @apply h-12 flex items-center justify-center text-white font-bold text-sm border-2 border-white rounded-lg mr-0.5 relative transition-all duration-300 cursor-pointer hover:scale-105 hover:z-10 hover:shadow-lg;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border: 2px solid white;
+    border-radius: 12px;
+    margin-right: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.gantt-process::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+}
+
+.gantt-process:hover {
+    transform: translateY(-4px) scale(1.08);
+    z-index: 10;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    border-color: #ffd700;
 }
 
 .gantt-time-labels {
-    @apply flex min-w-full mt-2;
-    min-width: 600px;
+    display: flex;
+    margin-top: 16px;
+    min-width: 700px;
+    background: white;
+    border-radius: 8px;
+    padding: 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
 }
 
 .gantt-time-label {
-    @apply text-xs text-center text-base-content/60 border-l border-base-300 pl-0.5;
+    font-size: 0.875rem;
+    text-align: center;
+    font-weight: 600;
+    color: #495057;
+    border-left: 1px solid #6c757d;
+    padding-left: 4px;
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    padding: 8px 4px;
+    transition: all 0.2s ease;
+}
+
+.gantt-time-label:hover {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    transform: scale(1.1);
+}
+
+.gantt-time-label:first-child {
+    border-left: none;
+    border-radius: 8px 0 0 8px;
+}
+
+.gantt-time-label:last-child {
+    border-radius: 0 8px 8px 0;
 }
 
 /* Process Colors */
@@ -51,49 +178,119 @@
 
 /* Results Table Styling */
 .results-table {
-    @apply w-full border-collapse mt-4 rounded-xl overflow-hidden shadow-lg;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: white;
+    border: 1px solid #e2e8f0;
 }
 
 .results-table th {
-    @apply bg-gradient-to-r from-primary to-secondary text-white p-3 text-center font-semibold text-sm;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 16px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 3px solid #5a67d8;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .results-table td {
-    @apply p-2.5 text-center border-b border-base-300 text-sm;
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 1rem;
+    font-weight: 500;
+    background: #ffffff;
+    transition: all 0.3s ease;
 }
 
-.results-table tbody tr:nth-child(even) {
-    @apply bg-base-100;
+.results-table tbody tr:nth-child(even) td {
+    background: #f8fafc;
 }
 
-.results-table tbody tr:hover {
-    @apply bg-primary/10 scale-[1.01] transition-all duration-300;
+.results-table tbody tr:hover td {
+    background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.results-table tbody tr:first-child td {
+    border-top: 2px solid var(--primary-color);
 }
 
 /* Performance Metrics Styling */
 .metrics-container {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-4;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
 }
 
 .metric-card {
-    @apply bg-gradient-to-br from-primary to-secondary text-white p-5 rounded-2xl text-center shadow-lg transition-transform duration-300 hover:-translate-y-1;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 24px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #ffa07a);
+}
+
+.metric-card:hover {
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    transform: translateY(-8px) scale(1.05);
 }
 
 .metric-value {
-    @apply text-3xl font-bold mb-1;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background: linear-gradient(45deg, #ffffff, #e2e8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .metric-label {
-    @apply text-sm opacity-90;
+    font-size: 1rem;
+    font-weight: 600;
+    opacity: 0.95;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* Enhanced Card Styling */
 .card {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15) !important;
 }
 
 .card-header {
-    @apply font-semibold border-b-0;
+    font-weight: 600;
+    border-bottom: none;
 }
 
 /* Animation for loading */
@@ -118,26 +315,21 @@
     }
     
     .results-table {
-        @apply text-xs;
+        font-size: 0.75rem;
     }
     
     .results-table th,
     .results-table td {
-        @apply p-2;
+        padding: 8px;
     }
     
     .metrics-container {
-        @apply grid-cols-1;
+        grid-template-columns: 1fr;
     }
-}
-
-/* Tooltip Styling */
-.tooltip-custom {
-    @apply absolute bg-black/80 text-white px-3 py-2 rounded-md text-xs z-50 pointer-events-none opacity-0 transition-opacity duration-300;
-}
-
-.tooltip-custom.show {
-    @apply opacity-100;
+    
+    .metric-value {
+        font-size: 2rem;
+    }
 }
 
 /* Custom Scrollbar */
@@ -146,29 +338,55 @@
 }
 
 ::-webkit-scrollbar-track {
-    @apply bg-base-200 rounded-full;
+    background: #e9ecef;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-gradient-to-b from-primary to-secondary rounded-full;
+    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    @apply from-primary/80 to-secondary/80;
-}
-
-/* Alert/Toast Styling */
-.alert {
-    @apply fixed top-5 right-5 z-50 max-w-sm shadow-lg;
+    background: linear-gradient(to bottom, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
 }
 
 /* Button Enhancements */
 .btn {
-    @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 /* Input Focus Enhancements */
-.input:focus,
-.select:focus {
-    @apply ring-2 ring-primary/50 border-primary;
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Alert/Toast Styling for Bootstrap alerts */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 350px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Utility Classes */
+.opacity-90 {
+    opacity: 0.9;
+}
+
+.fw-medium {
+    font-weight: 500;
+}
+
+.fw-semibold {
+    font-weight: 600;
 }
