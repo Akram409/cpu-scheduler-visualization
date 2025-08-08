@@ -1,0 +1,174 @@
+/* Custom CSS for CPU Scheduling Simulator with Tailwind CSS and DaisyUI */
+
+/* Process List Styling */
+.process-item {
+    @apply bg-base-200 border border-base-300 rounded-lg p-3 mb-2 flex justify-between items-center transition-all duration-300 hover:bg-base-300 hover:translate-x-1;
+}
+
+.process-info {
+    @apply text-sm font-medium;
+}
+
+.remove-process {
+    @apply btn btn-ghost btn-sm text-error hover:bg-error hover:text-error-content transition-colors duration-300;
+    background: none;
+    border: none;
+    padding: 4px 8px;
+}
+
+/* Gantt Chart Styling */
+.gantt-container {
+    @apply overflow-x-auto py-5;
+}
+
+.gantt-chart {
+    @apply flex items-center min-w-full my-5;
+    min-width: 600px;
+}
+
+.gantt-process {
+    @apply h-12 flex items-center justify-center text-white font-bold text-sm border-2 border-white rounded-lg mr-0.5 relative transition-all duration-300 cursor-pointer hover:scale-105 hover:z-10 hover:shadow-lg;
+}
+
+.gantt-time-labels {
+    @apply flex min-w-full mt-2;
+    min-width: 600px;
+}
+
+.gantt-time-label {
+    @apply text-xs text-center text-base-content/60 border-l border-base-300 pl-0.5;
+}
+
+/* Process Colors */
+.process-p1 { background: linear-gradient(45deg, #FF6B6B, #FF8E8E); }
+.process-p2 { background: linear-gradient(45deg, #4ECDC4, #44A08D); }
+.process-p3 { background: linear-gradient(45deg, #45B7D1, #96C93D); }
+.process-p4 { background: linear-gradient(45deg, #FFA07A, #FA8072); }
+.process-p5 { background: linear-gradient(45deg, #98D8C8, #F7DC6F); }
+.process-p6 { background: linear-gradient(45deg, #BB8FCE, #85C1E9); }
+.process-p7 { background: linear-gradient(45deg, #F8C471, #F1948A); }
+.process-p8 { background: linear-gradient(45deg, #82E0AA, #AED6F1); }
+
+/* Results Table Styling */
+.results-table {
+    @apply w-full border-collapse mt-4 rounded-xl overflow-hidden shadow-lg;
+}
+
+.results-table th {
+    @apply bg-gradient-to-r from-primary to-secondary text-white p-3 text-center font-semibold text-sm;
+}
+
+.results-table td {
+    @apply p-2.5 text-center border-b border-base-300 text-sm;
+}
+
+.results-table tbody tr:nth-child(even) {
+    @apply bg-base-100;
+}
+
+.results-table tbody tr:hover {
+    @apply bg-primary/10 scale-[1.01] transition-all duration-300;
+}
+
+/* Performance Metrics Styling */
+.metrics-container {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-4;
+}
+
+.metric-card {
+    @apply bg-gradient-to-br from-primary to-secondary text-white p-5 rounded-2xl text-center shadow-lg transition-transform duration-300 hover:-translate-y-1;
+}
+
+.metric-value {
+    @apply text-3xl font-bold mb-1;
+}
+
+.metric-label {
+    @apply text-sm opacity-90;
+}
+
+/* Enhanced Card Styling */
+.card {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl;
+}
+
+.card-header {
+    @apply font-semibold border-b-0;
+}
+
+/* Animation for loading */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.loading {
+    animation: pulse 1.5s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gantt-chart {
+        min-width: 300px;
+    }
+    
+    .gantt-time-labels {
+        min-width: 300px;
+    }
+    
+    .results-table {
+        @apply text-xs;
+    }
+    
+    .results-table th,
+    .results-table td {
+        @apply p-2;
+    }
+    
+    .metrics-container {
+        @apply grid-cols-1;
+    }
+}
+
+/* Tooltip Styling */
+.tooltip-custom {
+    @apply absolute bg-black/80 text-white px-3 py-2 rounded-md text-xs z-50 pointer-events-none opacity-0 transition-opacity duration-300;
+}
+
+.tooltip-custom.show {
+    @apply opacity-100;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-base-200 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-primary to-secondary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply from-primary/80 to-secondary/80;
+}
+
+/* Alert/Toast Styling */
+.alert {
+    @apply fixed top-5 right-5 z-50 max-w-sm shadow-lg;
+}
+
+/* Button Enhancements */
+.btn {
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg;
+}
+
+/* Input Focus Enhancements */
+.input:focus,
+.select:focus {
+    @apply ring-2 ring-primary/50 border-primary;
+}
